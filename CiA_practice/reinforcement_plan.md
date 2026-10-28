@@ -9,7 +9,7 @@ Goal: **active recall + hands-on grading**. Not re-reading — answering, buildi
 
 ## Progress
 
-> Last updated: session in progress. Updated below.
+> Last updated: 2025-07-16 — Phase 2 recall graded. Below.
 
 ### Completed
 
@@ -23,12 +23,17 @@ Goal: **active recall + hands-on grading**. Not re-reading — answering, buildi
   - Q2 Task switching vs hardware concurrency: ✅ solid (caught cold-cache/TLB refill — the part people forget)
   - Q3 Task vs data parallelism: ✅ solid (nudged on task-parallelism definition; "embarrassingly parallel" scales because pieces are independent)
   - Q4 Reasons to/not to use concurrency: ✅ solid (complexity vs overhead; nudged on 2nd reason = performance, and oversubscription cost)
-- **Phase 1 — Build (`parallel_accumulate`):** *pending* — awaiting code.
+- **Phase 1 — Build (`parallel_accumulate`):** ✅ PASSED — clean compile with `-std=c++23 -Wall -Wextra -Wconversion -Wsign-conversion -Wshadow -Werror`; correct across n=1..1000 (matches `std::accumulate`); fixed: data race (per-thread partial sums), `ceil` integer-division bug (`double` cast), `hardware_concurrency()==0` guard, consistent `size_t` (no conversion warnings).
+
+- **Phase 2 — Ch 2 recall (graded, concept-solid / precision-gaps):**
+  - Q1 join / jthread / exception-safe: ⚠️ correct fixes (RAII-joiner + jthread), but missed the standard's *terminate-on-exception-during-unwind* guarantee
+  - Q2 arg passing + two traps: ⚠️ caught dangling-trap + `std::ref`; missed the copy-vs-move distinction (trap #2)
+  - Q3 movable-only / most-vexing-parse: ✅ move-only correct; answered copy-trap instead of the parsing trap (`Foo()` → function declaration, fix = brace-init / lambda)
+  - Q4 `std::thread::id`: didn't know at all
 
 ### Next
 
-- Submit `parallel_accumulate` for Phase 1 grading (see build challenge below).
-- Then proceed to Phase 2 (Ch 2: Managing threads).
+- Phase 2 **build challenge** still open (vector + move-only accumulator + vexing-parse demo/fix); else proceed to **Phase 3** (Ch 3: sharing data).
 
 ## How we work (the loop)
 1. **Phase chapter**: I hand you the active-recall questions for that chapter. You answer from memory (chat or scratch file). No looking up until you've tried.
@@ -129,5 +134,3 @@ Deliver one file + a short write-up: which memory orderings/guards you chose and
 
 ---
 
-## How to start
-Just say **"start phase 0"** (or **"start phase N"**). I'll post that phase's recall questions; answer them, drop your code in `/tmp` and tell me the path, and I'll grade both rounds.
